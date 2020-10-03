@@ -21,3 +21,35 @@
   padding-left: 5px;
   margin-left: 5px;
 }
+.logo-outer {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+.logo-outer .left img {
+  width: 175px;
+  height: 56px;
+  margin: 25px 45px;
+}
+.logo-outer .right {
+  margin-top: 35px;
+  display: flex;
+}
+.logo-outer .right input {
+  box-sizing: border-box;
+  width: 490px;
+  height: 32px;
+  padding: 0 4px;
+  border: 2px solid #ea4a36;
+  outline: none;
+}
+.logo-outer .right button {
+  width: 68px;
+  height: 32px;
+  background-color: #ea4a36;
+  color: #fff;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
