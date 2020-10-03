@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/index.css">
 </head>
+
 <body>
     <!-- 最外侧 -->
     <div class="outer">
@@ -16,7 +18,7 @@
             <div class="header-outer">
                 <div class="header">
                     <div class="left">
-                        <span>尚品汇欢迎您  请</span>
+                        <span>尚品汇欢迎您 请</span>
                         <a href=":;javaScript">登录</a>
                         <a href=":;javaScript">免费注册</a>
                     </div>
@@ -165,4 +167,70 @@
         </section>
     </div>
 </body>
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+
+        // 放大镜蒙版区域
+        magnify();
+        function magnify() {
+            var oSmallArea = document.querySelector('.smallArea');
+            var oPreview = document.querySelector('.preview');
+            oPreview.onmouseenter = function () {
+                // 创建蒙版区域
+                var oMask = document.createElement("div");
+                oMask.classList.add("mask");
+                oSmallArea.appendChild(oMask);
+                // 大图区域
+                var oBigArea = document.createElement("div");
+                oBigArea.classList.add("bigArea")
+                var oImg = new Image();
+                oImg.src = "./images/b1.png";
+                oBigArea.appendChild(oImg);
+                oPreview.appendChild(oBigArea);
+                // 获取元素
+                oPreview.onmousemove = function (e) {
+                    // 计算距离
+                    var move = {
+                        x: e.clientX - oSmallArea.getBoundingClientRect().left - oMask.offsetWidth / 2,
+                        y: e.clientY - oSmallArea.getBoundingClientRect().top - oMask.offsetHeight / 2,
+                    }
+
+                    // 计算临界值
+                    if (move.x >= oSmallArea.clientWidth - oMask.offsetWidth) {
+                        move.x = oSmallArea.clientWidth - oMask.offsetWidth
+                    } else if (move.x <= 0) {
+                        move.x = 0
+                    }
+                    if (move.y >= oSmallArea.clientHeight - oMask.offsetHeight) {
+                        move.y = oSmallArea.clientHeight - oMask.offsetHeight
+                    } else if (move.y <= 0) {
+                        move.y = 0
+                    }
+                    // 进行赋值
+                    oMask.style.left = move.x + "px";
+                    oMask.style.top = move.y + "px";
+
+                    // 计算比例
+                    var scale = (oSmallArea.clientWidth - oMask.offsetWidth)/(oBigArea.clientWidth - oImg.offsetHeight);
+                    var bigMove = {
+                        x:move.x/scale,
+                        y:move.y/scale
+                    }
+                    //图片移动的距离
+                    oImg.style.left = bigMove.x + "px";
+                    oImg.style.top = bigMove.y + "px";
+
+                }
+                // 当鼠标离开时
+                oPreview.onmouseleave = function () {
+                    oPreview.onmousemove = null;
+                    oPreview.onmouseleave = null;
+                    oSmallArea.removeChild(oMask);
+                    oPreview.removeChild(oBigArea);
+                }
+            }
+        }
+    })
+</script>
+
 </html>
