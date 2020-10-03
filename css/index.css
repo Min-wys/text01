@@ -1,0 +1,23 @@
+.header-outer {
+  width: 100%;
+  min-width: 1200px;
+  background-color: #eaeaea;
+}
+.header-outer .header {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+}
+.header-outer .header .left a + a {
+  border-left: 1px solid #3c3c3c;
+  padding-left: 5px;
+  margin-left: 5px;
+}
+.header-outer .header .right a + a {
+  border-left: 1px solid #3c3c3c;
+  padding-left: 5px;
+  margin-left: 5px;
+}
