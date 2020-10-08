@@ -84,18 +84,7 @@
                         <p class="left">&lt;</p>
                         <div class="listOut">
                             <ul class="list">
-                                <li><img src="./images/s1.png" alt=""></li>
-                                <li><img src="./images/s2.png" alt=""></li>
-                                <li><img src="./images/s3.png" alt=""></li>
-                                <li><img src="./images/s1.png" alt=""></li>
-                                <li><img src="./images/s2.png" alt=""></li>
-                                <li><img src="./images/s3.png" alt=""></li>
-                                <li><img src="./images/s1.png" alt=""></li>
-                                <li><img src="./images/s2.png" alt=""></li>
-                                <li><img src="./images/s3.png" alt=""></li>
-                                <li><img src="./images/s1.png" alt=""></li>
-                                <li><img src="./images/s2.png" alt=""></li>
-                                <li><img src="./images/s3.png" alt=""></li>
+                                <!-- 动态加载图片资源 -->
                             </ul>
                         </div>
                         <p class="right">&gt;</p>
@@ -167,15 +156,17 @@
         </section>
     </div>
 </body>
+<script src="./js/data.js"></script>
 <script>
     window.addEventListener("DOMContentLoaded", function () {
-
+        var imgIndex = 0;
         // 放大镜蒙版区域
         magnify();
         function magnify() {
             var oSmallArea = document.querySelector('.smallArea');
             var oPreview = document.querySelector('.preview');
             oPreview.onmouseenter = function () {
+                var data = goodData.imgsrc;
                 // 创建蒙版区域
                 var oMask = document.createElement("div");
                 oMask.classList.add("mask");
@@ -184,9 +175,10 @@
                 var oBigArea = document.createElement("div");
                 oBigArea.classList.add("bigArea")
                 var oImg = new Image();
-                oImg.src = "./images/b1.png";
+                oImg.src = data[imgIndex].b;
                 oBigArea.appendChild(oImg);
                 oPreview.appendChild(oBigArea);
+
                 // 获取元素
                 oPreview.onmousemove = function (e) {
                     // 计算距离
@@ -211,10 +203,10 @@
                     oMask.style.top = move.y + "px";
 
                     // 计算比例
-                    var scale = (oSmallArea.clientWidth - oMask.offsetWidth)/(oBigArea.clientWidth - oImg.offsetHeight);
+                    var scale = (oSmallArea.clientWidth - oMask.offsetWidth) / (oBigArea.clientWidth - oImg.offsetHeight);
                     var bigMove = {
-                        x:move.x/scale,
-                        y:move.y/scale
+                        x: move.x / scale,
+                        y: move.y / scale
                     }
                     //图片移动的距离
                     oImg.style.left = bigMove.x + "px";
@@ -232,8 +224,57 @@
         }
         // 加载资源
         loadData();
-        function loadData(){
-            
+        function loadData() {
+            var oList = document.querySelector('.listOut .list');
+            var data = goodData.imgsrc;
+            data.forEach((item, index) => {
+                var newLi = document.createElement("li");
+                var newImg = new Image();
+                newImg.src = item.s;
+                newLi.appendChild(newImg);
+                oList.appendChild(newLi)
+            })
+
+        }
+        // 点击左右键小图开始移动左右移动俩张
+        smallMove();
+        function smallMove() {
+            var oLeft = document.querySelector('.prescroll .left');
+            var oRight = document.querySelector('.prescroll .right');
+            var oLi = document.querySelectorAll('.listOut .list li');
+            var oListOut = document.querySelector('.listOut');
+            var oList = document.querySelector('.listOut .list');
+            // 这里计算可以移动的总距离要使用个数进行计算，使用list的宽度不准确
+            var allMove = (oLi.length - 5) * oLi[0].offsetWidth;
+            var everyMove = oLi[0].offsetWidth * 2;
+
+            oRight.onclick = function () {
+                if (allMove - oListOut.scrollLeft >= everyMove) {
+                    oListOut.scrollLeft += everyMove;
+                    console.log(oListOut.scrollLeft + "右键");
+
+                } else {
+                    oListOut.scrollLeft = allMove;
+                    console.log(oListOut.scrollLeft + "右键最后");
+                }
+            }
+            oLeft.onclick = function () {
+                oListOut.scrollLeft -= everyMove;
+            }
+        }
+        // 点击小图上面的放大镜区域跟着进行变化
+        clickSmall();
+        function clickSmall() {
+            var oImg = document.querySelectorAll('.listOut .list li img');
+            var oSmallArea = document.querySelector('.preview .smallArea img');
+            var data = goodData.imgsrc;
+            oImg.forEach((item, index) => {
+                item.onclick = function () {
+                    oSmallArea.src = data[index].b;
+                    imgIndex = index;
+
+                }
+            })
         }
     })
 </script>
