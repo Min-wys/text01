@@ -92,35 +92,12 @@
                 </div>
                 <div class="detailArea">
                     <div class="priceArea">
-                        
+                        <!-- 动态加载数据 -->
                     </div>
                     <div class="chooseInsert">
                     </div>
                     <div class="chooseArea">
-                        <dl>
-                            <dt>选择颜色</dt>
-                            <dd>金色</dd>
-                            <dd>银色</dd>
-                            <dd>黑色</dd>
-                        </dl>
-                        <dl>
-                            <dt>内存容量</dt>
-                            <dd>16G</dd>
-                            <dd>32G</dd>
-                            <dd>64G</dd>
-                            <dd>128G</dd>
-                        </dl>
-                        <dl>
-                            <dt>选择版本</dt>
-                            <dd>公开版</dd>
-                            <dd>移动版</dd>
-                        </dl>
-                        <dl>
-                            <dt>选择优惠</dt>
-                            <dd>官方标配</dd>
-                            <dd>移动优惠版</dd>
-                            <dd>电信优惠版</dd>
-                        </dl>
+                        
                     </div>
                     <div class="goodsNum">
                         <div class="num">
@@ -256,7 +233,7 @@
         }
         // 动态加载
         priceAreaData();
-        function priceAreaData(){
+        function priceAreaData() {
             var data = goodData.goodsDetail;
             var oPriceArea = document.querySelector('.priceArea');
             oPriceArea.innerHTML = `<h3 class="title">${data.title}</h3>
@@ -280,9 +257,27 @@
                                 <p>配&nbsp;送&nbsp;至</p>
                                 <p>${data.address}</p>
                             </div>
-                        </div>`
+                        </div>`;
         }
-    
+        chooseAreaData();
+        function chooseAreaData() {
+            var data = goodData.goodsDetail;
+            var oChooseArea = document.querySelector('.chooseArea');
+            data.crumbData.forEach((item, index) => {
+                var oDL = document.createElement("dl");
+                var oDt = document.createElement("dt");
+                oDt.innerHTML = item.title;
+                oDL.appendChild(oDt);
+                oChooseArea.appendChild(oDL);
+                item.data.forEach((item,index)=>{
+                    var oDd = document.createElement("dd");
+                    oDd.innerHTML = item.type;
+                    oDd.dataset.changePrice = item.changePrice;
+                    oDL.appendChild(oDd);
+                })
+            })
+        }
+
     })
 </script>
 
